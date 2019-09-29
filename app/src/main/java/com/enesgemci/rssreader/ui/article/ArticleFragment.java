@@ -3,6 +3,7 @@ package com.enesgemci.rssreader.ui.article;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -90,9 +91,11 @@ public class ArticleFragment extends BaseFragment<ArticleView, ArticlePresenter>
 
     @Override
     public void openArticle(String link) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(link));
-        startActivity(i);
+        if (!TextUtils.isEmpty(link)) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(link));
+            startActivity(i);
+        }
     }
 
     @Override
