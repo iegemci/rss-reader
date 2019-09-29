@@ -1,12 +1,12 @@
 package com.enesgemci.rssreader.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter<V
         implements BaseView {
 
     private P presenter;
+    protected View containerView;
 
     @NonNull
     protected abstract P createPresenter();
@@ -35,8 +36,12 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter<V
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(getLayoutResId(), container, false);
-        return view;
+        containerView = inflater.inflate(getLayoutResId(), container, false);
+        return containerView;
+    }
+
+    protected <V extends View> V findViewById(@IdRes int id) {
+        return containerView.findViewById(id);
     }
 
     @Override
