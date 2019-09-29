@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rss Reader</string>
+    <string name="base_url">http://feeds.foxnews.com/foxnews/sports</string>
 </resources>
