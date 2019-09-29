@@ -1,6 +1,7 @@
 package com.enesgemci.rssreader.network.interactor;
 
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.enesgemci.rssreader.di.GraphFactory;
 import com.enesgemci.rssreader.network.client.RssNetworkClient;
@@ -13,37 +14,33 @@ import java.util.List;
 
 public class RssInteractor extends Interactor {
 
-    private String url;
+    private Handler mainHandler;
 
-    public RssInteractor(String url) {
-        this.url = url;
+    public RssInteractor() {
+        mainHandler = new Handler(Looper.getMainLooper());
     }
 
     public void getArticles(final OnTaskCompleteListener listener) {
-        new AsyncTask<Void, List<Article>, List<Article>>() {
-            @Override
-            protected List<Article> doInBackground(Void... voids) {
-                RssNetworkClient client = GraphFactory.getInstance().provideNetworkClient();
-                String response = client.connect();
-                List<Article> articles = new ArrayList<>();
+        executor.execute(() -> {
+            RssNetworkClient client = GraphFactory.getInstance().provideNetworkClient();
+            String response = client.connect();
+            List<Article> articles = new ArrayList<>();
 
-                try {
-                    articles = XmlParser.parse(response);
-                } catch (Exception e) {
-                    return articles;
-                }
-
-                return articles;
+            try {
+                articles = XmlParser.parse(response);
+            } catch (Exception e) {
+                // ignore for now
             }
 
-            @Override
-            protected void onPostExecute(List<Article> articles) {
-                if (articles.isEmpty()) {
+            final List<Article> finalArticles = articles;
+
+            mainHandler.post(() -> {
+                if (finalArticles.isEmpty()) {
                     listener.onError();
                 } else {
-                    listener.onTaskCompleted(articles);
+                    listener.onTaskCompleted(finalArticles);
                 }
-            }
-        }.execute();
+            });
+        });
     }
 }
