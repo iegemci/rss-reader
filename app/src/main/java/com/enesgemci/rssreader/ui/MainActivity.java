@@ -15,9 +15,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ArticleFragment fragment;
+
+        if (savedInstanceState == null) {
+            fragment = ArticleFragment.newInstance();
+        } else {
+            fragment = (ArticleFragment)
+                    getSupportFragmentManager().findFragmentByTag(ArticleFragment.TAG);
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, ArticleFragment.newInstance())
+                .replace(R.id.container, fragment, ArticleFragment.TAG)
                 .commit();
     }
 

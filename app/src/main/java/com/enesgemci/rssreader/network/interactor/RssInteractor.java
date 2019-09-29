@@ -4,13 +4,12 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.enesgemci.rssreader.di.GraphFactory;
+import com.enesgemci.rssreader.network.MExecutor;
 import com.enesgemci.rssreader.network.client.RssNetworkClient;
 import com.enesgemci.rssreader.rss.Article;
-import com.enesgemci.rssreader.rss.OnTaskCompleteListener;
 import com.enesgemci.rssreader.rss.XmlParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RssInteractor extends Interactor {
 
@@ -21,10 +20,10 @@ public class RssInteractor extends Interactor {
     }
 
     public void getArticles(final OnTaskCompleteListener listener) {
-        executor.execute(() -> {
+        MExecutor.execute(() -> {
             RssNetworkClient client = GraphFactory.getInstance().provideNetworkClient();
             String response = client.connect();
-            List<Article> articles = new ArrayList<>();
+            ArrayList<Article> articles = new ArrayList<>();
 
             try {
                 articles = XmlParser.parse(response);
@@ -32,7 +31,7 @@ public class RssInteractor extends Interactor {
                 // ignore for now
             }
 
-            final List<Article> finalArticles = articles;
+            final ArrayList<Article> finalArticles = articles;
 
             mainHandler.post(() -> {
                 if (finalArticles.isEmpty()) {

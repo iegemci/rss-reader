@@ -9,13 +9,12 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class XmlParser {
 
-    public static List<Article> parse(String xml) throws XmlPullParserException, IOException {
+    public static ArrayList<Article> parse(String xml) throws XmlPullParserException, IOException {
         ArrayList<Article> list = new ArrayList<>();
 
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();

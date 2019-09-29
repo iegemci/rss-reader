@@ -1,24 +1,25 @@
 package com.enesgemci.rssreader.ui.article;
 
 import com.enesgemci.rssreader.base.BasePresenter;
+import com.enesgemci.rssreader.di.GraphFactory;
+import com.enesgemci.rssreader.network.interactor.OnTaskCompleteListener;
 import com.enesgemci.rssreader.network.interactor.RssInteractor;
 import com.enesgemci.rssreader.rss.Article;
-import com.enesgemci.rssreader.rss.OnTaskCompleteListener;
 
-import java.util.List;
+import java.util.ArrayList;
 
 class ArticlePresenter extends BasePresenter<ArticleView> {
 
-    private RssInteractor interactor;
+    private final RssInteractor interactor;
 
-    ArticlePresenter(RssInteractor interactor) {
-        this.interactor = interactor;
+    ArticlePresenter() {
+        this.interactor = GraphFactory.getInstance().provideInteractor();
     }
 
     void getArticles() {
         interactor.getArticles(new OnTaskCompleteListener() {
             @Override
-            public void onTaskCompleted(List<Article> articles) {
+            public void onTaskCompleted(ArrayList<Article> articles) {
                 if (isViewAttached()) {
                     getView().setArticles(articles);
                 }
@@ -26,8 +27,16 @@ class ArticlePresenter extends BasePresenter<ArticleView> {
 
             @Override
             public void onError() {
-
+                if (isViewAttached()) {
+                    getView().onResponseError();
+                }
             }
         });
+    }
+
+    public void onArticleClicked(Article article) {
+        if (isViewAttached()) {
+            getView().openArticle(article.getLink());
+        }
     }
 }
