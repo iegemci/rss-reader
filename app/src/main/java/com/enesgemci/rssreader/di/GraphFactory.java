@@ -50,7 +50,7 @@ public final class GraphFactory implements DependencyInjector {
             return (I) graph.get(interactorClass);
         }
 
-        RssInteractor interactor = new RssInteractor(baseUrl);
+        RssInteractor interactor = new RssInteractor();
         graph.put(interactorClass, interactor);
 
         return (I) interactor;
