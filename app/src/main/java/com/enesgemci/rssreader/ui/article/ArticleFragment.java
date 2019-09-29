@@ -10,6 +10,9 @@ import com.enesgemci.rssreader.R;
 import com.enesgemci.rssreader.base.BaseFragment;
 import com.enesgemci.rssreader.di.GraphFactory;
 import com.enesgemci.rssreader.network.interactor.RssInteractor;
+import com.enesgemci.rssreader.rss.Article;
+
+import java.util.List;
 
 public class ArticleFragment extends BaseFragment<ArticleView, ArticlePresenter> implements ArticleView {
 
@@ -20,6 +23,7 @@ public class ArticleFragment extends BaseFragment<ArticleView, ArticlePresenter>
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getPresenter().getArticles();
     }
 
     @Override
@@ -32,5 +36,10 @@ public class ArticleFragment extends BaseFragment<ArticleView, ArticlePresenter>
     protected ArticlePresenter createPresenter() {
         RssInteractor interactor = GraphFactory.getInstance().provideInteractor();
         return new ArticlePresenter(interactor);
+    }
+
+    @Override
+    public void setArticles(List<Article> articles) {
+        // TODO:
     }
 }
