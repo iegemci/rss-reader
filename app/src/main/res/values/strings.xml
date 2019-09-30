@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Rss Reader</string>
-    <string name="base_url">http://www.milliyet.com.tr/rss/rssNew/dunyaRss.xml</string>
+    <string name="base_url">http://feeds.foxnews.com/foxnews/sports</string>
     <string name="response_error">Oops.. Something went wrong</string>
 </resources>
